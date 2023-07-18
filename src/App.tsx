@@ -4,14 +4,61 @@ import { useState } from "react";
 
 function App() {
   const [square, setSquare] = useState(Array(9).fill(null));
+  const [xIsNext, setXIsNext] = useState(true);
   const handleClick = (i: number) => {
+    if (square[i] || calculateWinner(square)) {
+      return;
+    }
     const nextSquares = square.slice();
-    nextSquares[i] = "X";
+    if (xIsNext) {
+      nextSquares[i] = "X";
+    } else {
+      nextSquares[i] = "O";
+    }
     setSquare(nextSquares);
+    setXIsNext(!xIsNext);
   };
+
+  const calculateWinner = (squares: any[]) => {
+    const lines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c] = lines[i];
+      console.log(a);
+      console.log(b);
+      console.log(c);
+      if (
+        squares[a] &&
+        squares[a] === squares[b] &&
+        squares[a] === squares[c]
+      ) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return squares[a];
+      }
+    }
+    return null;
+  };
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const winner = calculateWinner(square);
+  let status;
+  if (winner) {
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+    status = "Winner: " + winner;
+  } else {
+    status = "Next player: " + (xIsNext ? "X" : "O");
+  }
   return (
     <Row align={"middle"} justify={"center"}>
       <Col>
+        <div>{status}</div>
         <div>
           <ButtonComponent
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
