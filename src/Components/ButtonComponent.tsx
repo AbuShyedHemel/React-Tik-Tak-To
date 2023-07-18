@@ -1,15 +1,13 @@
 import { Button } from "antd";
-import { useState } from "react";
 
-const ButtonComponent = () => {
-  const [value, setValue] = useState("");
-
-  const handleClick = () => {
-    setValue("X");
-  };
+interface valType {
+  value: any[];
+  onSquareClick: () => void;
+}
+const ButtonComponent = ({ value, onSquareClick }: valType) => {
   return (
-    <Button type="default" onClick={handleClick}>
-      {value ? value : "    "}
+    <Button className="bg-yellow-400" type="default" onClick={onSquareClick}>
+      {value}
     </Button>
   );
 };
